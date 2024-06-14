@@ -1,50 +1,46 @@
-// src/components/TaskManagement.js
 import React, { useState } from 'react';
-import React from 'react';
 import { useQuery } from 'react-query';
+import axios from 'axios';
 
 const TaskManagement = () => {
   const [task, setTask] = useState('');
-  const [tasks, setTasks] = useState([]);
+  const { data: tasks, isLoading, error, refetch } = useQuery('tasks', fetchTasks);
+
+  const fetchTasks = async () => {
+    try {
+      const response = await axios.get('/api/tasks');
+      return response.data;
+    } catch (error) {
+      throw new Error(error.response.data.message || 'Failed to fetch tasks');
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      await axios.post('/api/tasks', { title: task });
+      setTask('');
+      refetch();
+    } catch (error) {
+      console.error('Error adding task:', error.message);
+    }
+  };
+
+  const handleDelete = async (taskId) => {
+    try {
+      await axios.delete(`/api/tasks/${taskId}`);
+      refetch();
+    } catch (error) {
+      console.error('Error deleting task:', error.message);
+    }
+  };
 
   const handleChange = (e) => {
     setTask(e.target.value);
   };
 
-  // src/components/TaskManagement.js
-
-
-
-const fetchTasks = async () => {
-  const response = await fetch('/api/tasks'); // Customize this endpoint
-  const data = await response.json();
-  return data;
-};
-
-const TaskManagement = () => {
-  const { data, isLoading, error } = useQuery('tasks', fetchTasks);
-
   if (isLoading) return <div>Loading...</div>;
   if (error) return <div>Error: {error.message}</div>;
-
-  return (
-    <div>
-      <h2>Tasks</h2>
-      <ul>
-        {data.map((task) => (
-          <li key={task.id}>{task.title}</li>
-        ))}
-      </ul>
-    </div>
-  );
-};
-
-
-
-  const handleDelete = (index) => {
-    const updatedTasks = tasks.filter((_, i) => i !== index);
-    setTasks(updatedTasks);
-  };
 
   return (
     <div>
@@ -60,9 +56,10 @@ const TaskManagement = () => {
         <button type="submit">Add Task</button>
       </form>
       <ul>
-        {tasks.map((task, index) => (
-          <li key={index}>
-            {task} <button onClick={() => handleDelete(index)}>Delete</button>
+        {tasks.map((task) => (
+          <li key={task.id}>
+            {task.title}{' '}
+            <button onClick={() => handleDelete(task.id)}>Delete</button>
           </li>
         ))}
       </ul>

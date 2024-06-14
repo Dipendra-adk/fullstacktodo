@@ -1,5 +1,6 @@
-// src/components/Login.js
 import React, { useState } from 'react';
+import { useMutation } from 'react-query';
+import axios from 'axios';
 
 const Login = () => {
   const [formData, setFormData] = useState({
@@ -7,19 +8,29 @@ const Login = () => {
     password: '',
   });
 
+  const loginMutation = useMutation(async (formData) => {
+    const response = await axios.post('/api/login', formData);
+    return response.data;
+  });
+
   const handleChange = (e) => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e) => {
+  const handleLogin = async (e) => {
     e.preventDefault();
-    // Handle login logic here
+    try {
+      await loginMutation.mutateAsync(formData);
+      // Redirect or perform actions after successful login
+    } catch (error) {
+      console.error('Login failed:', error);
+    }
   };
 
   return (
     <div>
       <h2>Login</h2>
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleLogin}>
         <div>
           <label>Email:</label>
           <input
@@ -40,7 +51,9 @@ const Login = () => {
             required
           />
         </div>
-        <button type="submit">Login</button>
+        <button type="submit" disabled={loginMutation.isLoading}>
+          {loginMutation.isLoading ? 'Logging in...' : 'Login'}
+        </button>
       </form>
     </div>
   );
