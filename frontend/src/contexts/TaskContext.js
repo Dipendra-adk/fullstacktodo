@@ -1,7 +1,6 @@
 
 
 import React, { createContext, useContext, useReducer } from 'react';
-import axios from 'axios';
 
 const TaskStateContext = createContext();
 const TaskDispatchContext = createContext();

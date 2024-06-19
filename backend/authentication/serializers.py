@@ -21,20 +21,20 @@ class UserSerializer(serializers.ModelSerializer):
 
     
 
-    def create(self, validated_data):
-        user = User.objects.create(
-            username=validated_data['username'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name'],
-            email=validated_data['email']
-        )
-        user.set_password(validated_data['password'])
-        user.save()
+    # def create(self, validated_data):
+    #     user = User.objects.create(
+    #         username=validated_data['username'],
+    #         first_name=validated_data['first_name'],
+    #         last_name=validated_data['last_name'],
+    #         email=validated_data['email']
+    #     )
+    #     user.set_password(validated_data['password'])
+    #     user.save()
 
-        # Create a new Profile instance for the user
-        Profile.objects.create(user=user)
+    #     # Create a new Profile instance for the user
+    #     Profile.objects.create(user=user)
 
-        return user
+    #     return user
 
 
 class ProfileSerializer(serializers.ModelSerializer):

@@ -1,7 +1,9 @@
-// src/components/PrivateRoute.js
+
 import React from 'react';
-import { Route, Redirect } from 'react-router-dom';
-import { useAuthState } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
+import { Route, Navigate } from 'react-router-dom';
+import { useAuthState } from '../contexts/AuthContext';
+
 
 const PrivateRoute = ({ component: Component, ...rest }) => {
   const { isAuthenticated } = useAuthState();
@@ -10,7 +12,7 @@ const PrivateRoute = ({ component: Component, ...rest }) => {
     <Route
       {...rest}
       render={(props) =>
-        isAuthenticated ? <Component {...props} /> : <Redirect to="/login" />
+        isAuthenticated ? <Component {...props} /> : <Navigate to="/login" />
       }
     />
   );

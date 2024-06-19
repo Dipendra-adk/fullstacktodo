@@ -1,7 +1,7 @@
 
 import React, { useEffect, useState } from 'react';
 import { fetchTasks, addTask, deleteTask } from '../api';
-import { useTasks, useTaskDispatch } from '../context/TaskContext';
+import { useTasks, useTaskDispatch } from '../contexts/TaskContext';
 
 const Tasks = () => {
   const { tasks } = useTasks();

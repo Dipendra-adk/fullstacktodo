@@ -1,7 +1,7 @@
-// src/components/Profile.js
+
 import React, { useEffect, useState } from 'react';
 import { fetchUserProfile, updateProfile } from '../api';
-import { useAuthState } from '../context/AuthContext';
+import { useAuthState } from '../contexts/AuthContext';
 
 const Profile = () => {
   const { user } = useAuthState();

@@ -1,12 +1,12 @@
-// src/components/Navbar.js
+
 import React from 'react';
 import { AppBar, Toolbar, Typography, Button } from '@mui/material';
-import { Link, useHistory } from 'react-router-dom';
-import { useAuth } from '../contexts/AuthContext';
+import { Link, useNavigate } from 'react-router-dom';
+import { useAuthState } from '../contexts/AuthContext';
 
 const Navbar = () => {
-  const { state, dispatch } = useAuth();
-  const history = useHistory();
+  const { state, dispatch } = useAuthState();
+  const history = useNavigate();
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });

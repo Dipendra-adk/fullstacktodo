@@ -102,7 +102,7 @@ from rest_framework.authtoken.models import Token
 class RegisterUserView(generics.CreateAPIView):
     queryset = User.objects.all()
     serializer_class = UserSerializer
-    permission_classes = [AllowAny]  # Allow unauthenticated users to register
+    # permission_classes = [AllowAny]  # Allow unauthenticated users to register
 
 class CustomAuthToken(ObtainAuthToken):
     def post(self, request, *args, **kwargs):

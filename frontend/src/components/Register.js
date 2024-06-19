@@ -1,6 +1,6 @@
-// src/components/Register.js
+
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { registerUser } from '../api';
 
 const Register = () => {
@@ -8,7 +8,7 @@ const Register = () => {
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState(null);
-  const history = useHistory();
+  const history = useNavigate();
 
   const handleRegister = async (e) => {
     e.preventDefault();

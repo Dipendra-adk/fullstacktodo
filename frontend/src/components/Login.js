@@ -1,15 +1,15 @@
-// src/components/Login.js
+
 import React, { useState } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { loginUser } from '../api';
-import { useAuthDispatch } from '../context/AuthContext';
+import { useAuthDispatch } from '../contexts/AuthContext';
 
 const Login = () => {
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [error, setError] = useState(null);
   const dispatch = useAuthDispatch();
-  const history = useHistory();
+  const history = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
