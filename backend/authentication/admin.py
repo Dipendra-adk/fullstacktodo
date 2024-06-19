@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import CustomUser
+from .models import User, Profile,Task
 
-class CustomUserAdmin(UserAdmin):
+class UserAdmin(UserAdmin):
     fieldsets = (
         (None, {'fields': ('username', 'password')}),
         ('Personal Info', {'fields': ('first_name', 'last_name', 'email', 'photo', 'phone_number')}),
@@ -10,6 +10,7 @@ class CustomUserAdmin(UserAdmin):
         ('Important Dates', {'fields': ('last_login', 'date_joined')}),
     )
 
-admin.site.register(CustomUser, CustomUserAdmin)
+admin.site.register(User, UserAdmin)
 
-
+admin.site.register(Profile)
+admin.site.register(Task)

@@ -38,7 +38,6 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'authentication',
-    'tasks',
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
@@ -59,9 +58,15 @@ CORS_ORIGIN_ALLOW_ALL = True
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.SessionAuthentication',  # For session-based authentication
+        'rest_framework.authentication.BasicAuthentication',
         'rest_framework.authentication.TokenAuthentication',
     ],
+    'DEFAULT_PERMISSION_CLASSES': [
+        'rest_framework.permissions.IsAuthenticated',
+    ],
 }
+
 
 ROOT_URLCONF = 'backend.urls'
 
@@ -114,13 +119,12 @@ AUTH_PASSWORD_VALIDATORS = [
 ]
 
 # whitelisting React port
-CORS_ORIGIN_WHITELIST = (
-    'http://localhost:3000',
-    
-)
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  
+]
 
 
-AUTH_USER_MODEL = 'authentication.CustomUser'
+AUTH_USER_MODEL = 'authentication.User'
 
 # Internationalization
 # https://docs.djangoproject.com/en/5.0/topics/i18n/
