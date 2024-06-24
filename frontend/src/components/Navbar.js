@@ -10,7 +10,7 @@ const Navbar = () => {
 
   const handleLogout = () => {
     dispatch({ type: 'LOGOUT' });
-    history.push('/login');
+    history('/login');
   };
 
   return (
@@ -19,7 +19,7 @@ const Navbar = () => {
         <Typography variant="h6" style={{ flexGrow: 1 }}>
           Todo App
         </Typography>
-        {state.isAuthenticated ? (
+        {state && state.isAuthenticated ? (
           <>
             <Button color="inherit" component={Link} to="/tasks">Tasks</Button>
             <Button color="inherit" onClick={handleLogout}>Logout</Button>

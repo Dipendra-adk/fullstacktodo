@@ -1,5 +1,4 @@
-import React, { createContext, useContext, useReducer } from 'react';
-
+import React, { createContext, useContext, useReducer, useEffect } from 'react';
 
 const AuthStateContext = createContext();
 const AuthDispatchContext = createContext();
@@ -25,6 +24,29 @@ const authReducer = (state, action) => {
   }
 };
 
+const fetchUserProfile = async () => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    throw new Error('No token stored');
+  }
+
+  try {
+    const response = await fetch('http://127.0.0.1:8000/api/profile/', {
+      headers: {
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch user profile');
+    }
+
+    return await response.json();
+  } catch (error) {
+    throw new Error(`Error fetching user profile: ${error.message}`);
+  }
+};
+
 export const AuthProvider = ({ children }) => {
   const initialState = {
     isAuthenticated: !!localStorage.getItem('token'),
@@ -32,6 +54,21 @@ export const AuthProvider = ({ children }) => {
   };
 
   const [state, dispatch] = useReducer(authReducer, initialState);
+
+  useEffect(() => {
+    const fetchUserData = async () => {
+      try {
+        if (state.isAuthenticated) {
+          const user = await fetchUserProfile();
+          dispatch({ type: 'LOGIN', payload: { user, token: localStorage.getItem('token') } });
+        }
+      } catch (error) {
+        console.error('Failed to fetch user data:', error);
+      }
+    };
+
+    fetchUserData();
+  }, [state.isAuthenticated]);
 
   return (
     <AuthStateContext.Provider value={state}>
